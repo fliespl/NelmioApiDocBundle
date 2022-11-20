@@ -52,9 +52,9 @@ class DescriptionFormTypeExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'description' => '',
-        ));
+        ]);
     }
 
     /**
@@ -63,5 +63,12 @@ class DescriptionFormTypeExtension extends AbstractTypeExtension
     public function getExtendedType()
     {
         return LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\FormType');
+    }
+
+    public static function getExtendedTypes(): iterable
+    {
+        return [
+            LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\FormType'),
+        ];
     }
 }
