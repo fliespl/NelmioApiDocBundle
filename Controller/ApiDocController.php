@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Controller;
 
+use Nelmio\ApiDocBundle\Extractor\ApiDocExtractor;
+use Nelmio\ApiDocBundle\Formatter\HtmlFormatter;
 use Nelmio\ApiDocBundle\Formatter\RequestAwareSwaggerFormatter;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,10 +22,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiDocController extends AbstractController
 {
+    private ApiDocExtractor $apiDocExtractor;
+    private HtmlFormatter $htmlFormatter;
+
+    public function __construct(ApiDocExtractor $apiDocExtractor, HtmlFormatter $htmlFormatter)
+    {
+        $this->apiDocExtractor = $apiDocExtractor;
+        $this->htmlFormatter = $htmlFormatter;
+    }
+
     public function indexAction($view = ApiDoc::DEFAULT_VIEW)
     {
-        $extractedDoc = $this->get('nelmio_api_doc.extractor.api_doc_extractor')->all($view);
-        $htmlContent  = $this->get('nelmio_api_doc.formatter.html_formatter')->format($extractedDoc);
+        $extractedDoc = $this->apiDocExtractor->all($view);
+        $htmlContent  = $this->htmlFormatter->format($extractedDoc);
 
         return new Response($htmlContent, 200, array('Content-Type' => 'text/html'));
     }
