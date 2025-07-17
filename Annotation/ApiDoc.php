@@ -92,9 +92,9 @@ class ApiDoc
     private $documentation = null;
 
     /**
-     * @var Boolean
+     * @var string|null
      */
-    private $resource = false;
+    private $resource = null;
 
     /**
      * @var string
@@ -191,7 +191,7 @@ class ApiDoc
         ?bool $https = null,
         ?string $resourceDescription = null,
         ?array $responseMap = null,
-        ?bool $resource = null
+        ?string $resource = null
     )
     {
         // Support both old array format and new named parameters for PHP 8 attributes
@@ -218,7 +218,7 @@ class ApiDoc
         if ($responseMap !== null) $data['responseMap'] = $responseMap;
         if ($resource !== null) $data['resource'] = $resource;
         
-        $this->resource = !empty($data['resource']) ? $data['resource'] : false;
+        $this->resource = !empty($data['resource']) ? $data['resource'] : null;
 
         if (isset($data['description'])) {
             $this->description = $data['description'];
@@ -500,7 +500,7 @@ class ApiDoc
     }
 
     /**
-     * @return mixed
+     * @return string|false
      */
     public function getResource()
     {
