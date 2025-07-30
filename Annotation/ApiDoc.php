@@ -412,7 +412,7 @@ class ApiDoc
     }
 
     /**
-     * @return string|null
+     * @return array|string|null
      */
     public function getOutput()
     {
