@@ -208,7 +208,15 @@ class ApiDocExtractor
             return null;
         }
 
-        if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
+        // Symfony 6.x returns controller as callable array ["Class", "method"]
+        if (is_array($controller)) {
+            if (isset($controller[0], $controller[1])) {
+                $class = is_object($controller[0]) ? get_class($controller[0]) : $controller[0];
+                $method = $controller[1];
+            } else {
+                return null;
+            }
+        } elseif (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
             $class = $matches[1];
             $method = $matches[2];
         } else {
